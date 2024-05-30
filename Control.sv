@@ -41,17 +41,179 @@ always_comb begin
   
 
 case(opcode)    
-  'b0000:  begin					
-               MemWrite = 'b1;     
-               RegWrite = 'b0;      
+  'b0000: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
 			 end
-  'b0001:  begin					
-               MemWrite = 'b1;     
-               RegWrite = 'b0;      
+  'b0001: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
 			 end  
-  'b00010:  begin				  
-			   MemtoReg = 'b1;    
-             end
+  'b0010: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+  'b0011: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+  'b0100: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b0101: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b0110: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b0111: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1000: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1001: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1010: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1011: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+  'b1100: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1101: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1110: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+  'b1111: begin					
+				RegWrite	= 0;
+				AccWrite	= 0;
+				MemRead	= 0;
+				MemWrite	= 0;
+				start		= 0;
+				halt		= 0;
+				branch	= 0;
+				Lookup	= 0;      
+			 end
+
+
+
 // ...
 endcase
 
