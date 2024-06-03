@@ -1,11 +1,11 @@
 // combinational -- no clock
 // sample -- change as desired
 module alu(
-  input[3:0] 					opcode,    		// 4-bit opcode
+  input[3:0] 					opcode,    				// 4-bit opcode
   input 							identifier,		 		// identifier bit for opcode
-  input[7:0] 					inAcc, inReg,	 	// 8-bit wide data path
+  input[7:0] 					inAcc, inReg,	 		// 8-bit wide data path
 //  input inOverflow,		 		// overflow flag
-  output logic[7:0] 			rslt		// result
+  output logic[7:0] 			rslt						// result
 //  output logic outOverflow 	// overflow out
 );
 

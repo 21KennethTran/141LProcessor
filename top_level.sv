@@ -1,6 +1,6 @@
 // sample top level design
 module top_level(
-  input        		clk, Start, req, 
+  input        		clk; 
   output logic 		done);
   parameter 			D = 12,             			// program counter width
 							A = 4;              			// ALU command bit width
@@ -18,25 +18,27 @@ module top_level(
 							immVal;
 							
   wire[7:0]   			acc_out,reg_out,		  		// from RegFile 
-							rslt,               			// alu output
-
+							rslt,								// alu output
+							mem_out;               		// datamem output
 
   
-  wire[A-1:0] 			opcode;							// opcode
-  wire					identifier;  					// identifier for opcode
+  wire[3:0]				opcode;							// opcode from machine code
+  wire					identifier;						// identifier for opcode
+  wire[3:0]				operand;							// operand from machine code
   wire[8:0]   			mach_code;          			// machine code
-  wire[2:0] 			rd_addrA, rd_adrB;    		// address pointers to reg_file
+  wire[2:0] 			inReg,				    		// address pointers to reg_file
   
   
   
 // fetch subassembly
   PC #(.D(D)) 					  							// D sets program counter width
-     pc1 (.Start            ,
-         .clk              ,
-		 .reljump_en (relj),
-		 .absjump_en (absj),
-		 .target           ,
-		 .prog_ctr          );
+     pc1 (
+			.Start,
+         .clk,
+			.Done,
+			.Branch,
+			.target,
+			.prog_ctr);
 
 // lookup table to facilitate jumps/Branches
   PC_LUT #(.D(D))
@@ -48,43 +50,49 @@ module top_level(
                .mach_code);
 
 // control decoder
-  Control ctl1(.instr(),
-  .RegDst  (), 
-  .Branch  (relj)  , 
-  .MemWrite , 
-  .ALUSrc   , 
-  .RegWrite   ,     
-  .MemtoReg(),
-  .ALUOp());
+  Control ctl1(
+		.opcode(mach_code[8:5]),
+		.identifier(mach_code[4]), 
+		.RegWrite, 
+		.AccWrite, 
+		.MemRead, 
+		.MemWrite,     
+		.Start,
+		.Done,
+		.Branch,
+		.Lookup,
+		.ImmVal);
 
-  assign rd_addrA = mach_code[2:0];
-  assign rd_addrB = mach_code[5:3];
-  assign opcode  = mach_code[8:6];
+  assign operand = mach_code[3:0];
+  assign identifier = mach_code[4];
+  assign opcode  = mach_code[8:5];
 
-  reg_file #(.pw(3)) rf1(.dat_in(regfile_dat),	   // loads, most ops
-              .clk         ,
-              .MemWrite   (RegWrite),
-              .rd_addrA(rd_addrA),
-              .rd_addrB(rd_addrB),
-              .wr_addr (rd_addrB),      // in place operation
-              .datA_out(datA),
-              .datB_out(datB)); 
+  reg_file #(.pw(3)) rf1(
+					.dat_in(AccWrite ? mem_out: rslt),	   			// result from ALU OR from datamem
+					.clk,
+					.ImmVal,
+					.AccWrite,
+					.RegWrite,
+					.addr(operand),      									// in place operation
+					.acc_out,
+					.reg_out); 
 
-  assign muxB = ALUSrc? immed : datB;
 
-  alu alu1(.opcode(),
-         .inA    (datA),
-		 .inB    (muxB),
-		 .sc_i   (sc),   // output from sc register
-		 .rslt       ,
-		 .sc_o   (sc_o), // input to sc register
-		 .pari  );  
+  alu alu1(
+			.opcode,
+         .identifier,
+			.inAcc(acc_out),
+			.inReg(reg_out),   							// output from reg_file
+			.rslt);  
 
-  dat_mem dm1(.dat_in(datB)  ,  // from reg_file
-             .clk           ,
-			 .MemWrite  (MemWrite), // stores
-			 .addr   (datA),
-             .dat_out());
+			
+  dat_mem dm1(
+			.dat_in(rslt)  ,  					// from from ALU
+         .clk           ,
+			.MemRead,
+			.MemWrite,
+			.addr(acc_out),
+         .dat_out(mem_out));
 
 // registered flags from ALU
   always_ff @(posedge clk) begin
