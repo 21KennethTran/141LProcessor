@@ -1,0 +1,86 @@
+Main:
+Lwr $t0 0b11111111
+Mov $t1 0
+Mov $t2 0
+Mov* $t3
+Mov* $t4
+Mov* $t11
+Mov $t5 0
+Mov $t6 2
+
+Outer_loop:
+Beq $t5 62 Exit
+Add $t5 2
+Mov* $t5
+Mov* $t6
+Add $t6 2  
+
+
+Inner_loop:
+Beq $t6 64 Outer_loop 
+Lwr* data_mem
+Add $t5 
+Lwr $t7
+Add* 1
+Lwr $t8
+Lwr* data_mem
+Add $t6
+Lwr $t9
+Add 1
+Lwr $t10
+Lwr* $t11
+Xor $t7
+add $t7 1
+Add $t8
+Xor $t11
+Mov $t7
+Add $t9
+Mov $t7
+Mov $t8
+Add $t10
+Mov $t8
+Rsl 8
+Beq 0 CompareUpperMin
+Mov* $t7
+Xor $t11
+Add 1
+Mov $t7
+Mov* $t8
+Xor $t11
+Add* $t12
+Mov $t8
+
+
+CompareUpperMin:
+Mov* $t8
+Bgt* $t3 CompareMax
+Beq* $t3 CompareLowerMin
+Mov $t3
+Mov* $t7
+Mov $t4
+
+
+CompareLowerMin:
+Mov* $t7
+Bgt* $t3 CompareUpperMax
+Mov $t4
+
+CompareUpperMax:
+Mov* t8
+Ble* t1 Increment
+Beq* t1 CompareLowerMax
+Mov $t1
+Mov* $t7
+Mov $t2 
+
+
+CompareLowerMax:
+Mov* $t7
+Ble* $t1 Increment
+Mov $t2
+
+
+Increment:
+Add $t6 2
+j innerloop
+

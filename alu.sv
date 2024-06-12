@@ -13,7 +13,7 @@ always_comb begin
   rslt = 8'b000_0000;
 //  outOverflow = inOverflow;
   
-  
+
   case(opcode)
 		// load (lwr*)
 		4'b0000:
