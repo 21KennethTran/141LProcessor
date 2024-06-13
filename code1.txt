@@ -6,7 +6,7 @@ mov	$t1
 mof* 0b1111					
 mov $t8						
 lsl	4						
-Or $t8						
+or $t8						
 mov $t8						
 mof* 1						
 xor	$t8					
