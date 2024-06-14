@@ -2,10 +2,24 @@ module PC_LUT #(parameter D=12)(
   input       [ 3:0] addr,	   // target 4 values
   output logic[D-1:0] target);
 
+  // absolute jumps
   always_comb case(addr)
-   0: target = -5;   // go back 5 spaces
-	1: target = 20;   // go ahead 20 spaces
-	2: target = '1;   // go back 1 space   1111_1111_1111
+   0: target = 1;   		// default
+	1: target = 18;   	// Program 1
+	2: target = 31;
+	3: target = 54;
+	4: target = 76;
+	5: target = 85;
+	6: target = 88;
+	7: target = 91;
+	8: target = 31;		// Program 2
+	9: target = 31;
+	10: target = 31;
+	11: target = 31;
+	12: target = 31;
+	13: target = 31;
+	14: target = 31;
+	15: target = 31;
 	default: target = 'b0;  // hold PC  
   endcase
 

@@ -39,19 +39,10 @@
 
 set_global_assignment -name FAMILY "Arria II GX"
 set_global_assignment -name DEVICE auto
-set_global_assignment -name TOP_LEVEL_ENTITY 141LProcessor
+set_global_assignment -name TOP_LEVEL_ENTITY top_level
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "22:26:54  MAY 29, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
-set_global_assignment -name SYSTEMVERILOG_FILE top_level.sv
-set_global_assignment -name SYSTEMVERILOG_FILE reg_file.sv
-set_global_assignment -name SYSTEMVERILOG_FILE prog3.sv
-set_global_assignment -name SYSTEMVERILOG_FILE PC_LUT.sv
-set_global_assignment -name SYSTEMVERILOG_FILE PC.sv
-set_global_assignment -name SYSTEMVERILOG_FILE instr_ROM.sv
-set_global_assignment -name SYSTEMVERILOG_FILE dat_mem.sv
-set_global_assignment -name SYSTEMVERILOG_FILE Control.sv
-set_global_assignment -name SYSTEMVERILOG_FILE alu.sv
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (SystemVerilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
@@ -60,4 +51,21 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name TEXT_FILE test0.txt
+set_global_assignment -name SYSTEMVERILOG_FILE test_bench_new.sv
+set_global_assignment -name TEXT_FILE machcode3.txt
+set_global_assignment -name TEXT_FILE machcode2.txt
+set_global_assignment -name TEXT_FILE machcode1.txt
+set_global_assignment -name SYSTEMVERILOG_FILE top_level.sv
+set_global_assignment -name SYSTEMVERILOG_FILE reg_file.sv
+set_global_assignment -name SYSTEMVERILOG_FILE PC_LUT.sv
+set_global_assignment -name SYSTEMVERILOG_FILE PC.sv
+set_global_assignment -name SYSTEMVERILOG_FILE instr_ROM.sv
+set_global_assignment -name SYSTEMVERILOG_FILE dat_mem.sv
+set_global_assignment -name SYSTEMVERILOG_FILE Control.sv
+set_global_assignment -name SYSTEMVERILOG_FILE alu.sv
 set_global_assignment -name TEXT_FILE mach_code.txt

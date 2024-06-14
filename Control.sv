@@ -53,7 +53,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end
@@ -90,7 +90,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -105,7 +105,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -121,7 +121,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -137,7 +137,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -153,7 +153,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -169,7 +169,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -185,7 +185,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -201,7 +201,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end      
@@ -217,7 +217,7 @@ case(opcode)
 				Branch	= 0;
 				Lookup	= 0;
 				if (identifier) begin
-					immVal = 1;
+					ImmVal = 1;
 				end else begin
 					ImmVal	= 0;
 				end;      

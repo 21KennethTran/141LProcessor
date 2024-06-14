@@ -29,7 +29,7 @@ def assembleLine(part):
     
     return final
 
-with open("code2.txt", "r") as file:
+with open("code1.txt", "r") as file:
     lines = file.readlines()
     full = []
     for line in lines:
@@ -40,6 +40,6 @@ with open("code2.txt", "r") as file:
             if instr is not None:
                 full.append(instr)
 
-with open("machcode2.txt", "w") as out:
+with open("machcode1.txt", "w") as out:
         for instruction in full:
             out.write(instruction + '\n')

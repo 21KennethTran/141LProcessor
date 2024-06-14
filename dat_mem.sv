@@ -16,9 +16,11 @@ module dat_mem (
 			dat_out = core[addr];
 		else
 			dat_out = 8'bZ; 	// not sure what this should be
+  end
 
 // writes are sequential (clocked) -- occur on stores or pushes 
-  always_ff @(posedge clk)
+  always_ff @(posedge clk) begin
     if(MemWrite)				  		// MemWrite usually = 0; = 1 		
       core[addr] <= dat_in; 
+  end
 endmodule
