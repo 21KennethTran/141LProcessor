@@ -1,29 +1,29 @@
-    mof*	0						# load immediate value 0 into accumulator
+    mof*	0000						# load immediate value 0 into accumulator
     mov	$t1						# set max or r0 to 0
-    mof* 	1						# load immediate value 1 into acc
-    lsl*	4						# left shift acc value by immediate value 4 → 16
+    mof* 	0001						# load immediate value 1 into acc
+    lsl*	0100						# left shift acc value by immediate value 4 → 16
     Mov	$t2						# set min or r1 to 16
-    mof*	0b1111					# load imm value 15 into acc
+    mof*	1111					# load imm value 15 into acc
     Mov 	$t9						# set our mask (0b11111111) lower 4 bits
-    Lsl	4						# left shift acc value by imm value 4 → 0b11110000
+    Lsl	0100						# left shift acc value by imm value 4 → 0b11110000
     Or	$t9						# or with our mask to get full mask
     mov 	$t9						# set our mask to 0b11111111
-    mof*	1						# load imm value 1 into acc
+    mof*	0001						# load imm value 1 into acc
     Xor	$t9						# xor with mask → 0b11111110
-    lsl*	2						# left shift acc value by 2 → 0b11111000
-    rsl*	2						# right shift acc value by 2 → 0b00111110 (62)
+    lsl*	0010						# left shift acc value by 2 → 0b11111000
+    rsl*	0010						# right shift acc value by 2 → 0b00111110 (62)
     mov	$t10						# set j_max = 62 for inner loop
-    add*	2						# 62 + 2 = 64 for our start i value
+    add*	0010						# 62 + 2 = 64 for our start i value
     mov	$t3						# set i = 64 (which will become 62 at loop start)
 Outer_loop:
     Mof    $t3						# load i into acc
-    beq	(7:91)						# branch to exit if i = 0
-    sub*	2						# subtract i by 2
+    beq		0111					#(7:91) branch to exit if i = 0
+    sub*	0010						# subtract i by 2
     Mov    $t3						# move new i value back into $t2
     lwr	$t3						# load data_mem[$t2]; value in memory
     mov	$t6						# save to temp2 (upper bits)
     mof	$t3						# move i into acc
-    add*	1						# add imm value 1 to acc
+    add*	0001						# add imm value 1 to acc
     mov	$t15						# store $t2+1 into register
     lwr	$t15						# load data_mem[$t2+1]; value in memory
     mov	$t5						# save to temp1 (lower bits)
@@ -32,20 +32,20 @@ Outer_loop:
 Inner_loop:
     mof	$t4						# move j into acc
     sub	$t3						# subtract i from j
-    beq	(1:18)				# go out to outer loop if equal to 0
+    beq	0001			#(1:18) go out to outer loop if equal to 0
     lwr	$t4						# load data_mem[$t3]; value in memory
     mov	$t8						# save to temp2j (upper bits)
     mof	$t4						# move j into acc
-    add*	1						# add imm value 1 to acc
+    add*	0001						# add imm value 1 to acc
     mov	$t15						# store $t3+1 into register
     lwr	$t15						# load data_mem[$t3+1]; value in memory
     mov	$t7						# save to temp1j (lower bits)
     mof	$t4						# move j into acc
-    sub*	2						# subtract j by 2
+    sub*	0010						# subtract j by 2
     mov 	$t4						# move new j value back into $t3
-    mof*	8						# load imm value 8
+    mof*	1000						# load imm value 8
     mov	$t11						# store into k = 8
-    mof*	0						# load imm value 0
+    mof*	0000						# load imm value 0
     mov	$t12						# store into distance = 0
     mof	$t5						# move temp1 into acc
     xor 	$t7						# xor with temp1j
@@ -55,14 +55,14 @@ Inner_loop:
     mov	$t8						# store result into temp2j
 Bit_manipulation:
     mof	$t11						# move k into acc
-    sub*	1						# subtract k by 1; k-1
+    sub*	0001						# subtract k by 1; k-1
     mof	$t7						# move xor’d 1 into acc
     lsl	$t11						# left shift by k
     mov	$t13						# store value in $t13
     mof	$t8						# move xor’d 2 into acc
     lsl	$t11						# left shift by k
     mov	$t14						# store value in $t14
-    mof*	7						# load imm value 7
+    mof*	0111						# load imm value 7
     sub	$t11						# subtract 7 by k
     mov	$t15						# store new value in reg
     mof	$t13						# load value at $t13
@@ -74,34 +74,34 @@ Bit_manipulation:
     add	$t12						# add to total distance; 1(or 0) + distance
     mov	$t12						# store in total distance
     mof	$t11						# move k into acc
-    beq	(4:76)					# branch to next step if k = 0
-    j		(3:54)			# continue bit manipulation for k = 7 to 0
+    beq	0100					# (4:76)branch to next step if k = 0
+    j	0011				#(3:54) continue bit manipulation for k = 7 to 0
 Compare:
     mof	$t12						# load distance into acc
     sub	$t1						# subtract current max from current distance
-    rsl*	7						# shift right 7 bits to get MSB
-    beq	(5:85)					# if current distance < max, branch to replace
+    rsl*	0111						# shift right 7 bits to get MSB
+    beq		0101				#(5:85) if current distance < max, branch to replace
     mof	$t2						# load current min into acc
     sub	$t12						# subtract current distance from minimum
-    rsl*	$8						# shift right 7 bits to get MSB
-    beq	(6:88)					# if min > current distance, branch to replace
-    j 	(2:31)				# else, just continue with next comparison
+    rsl*	0111						# shift right 7 bits to get MSB
+    beq	 0110				# (6:88)	if min > current distance, branch to replace
+    j 	0010				#(2:31) else, just continue with next comparison
 New_max:
     mof	$t12						# load distance into acc
     mov	$t1						# set new max to this distance
-    j		(2:31)				# branch back to inner loop
+    j		0010				# branch back to inner loop
 New_min:
     mof	$t12						# load distance into acc
     mov 	$t2						# set new min to this distance    
-    j 	(2:31)				# branch back to inner loop
+    j 	0010				# (2:31) branch back to inner loop
 exit:
-    mof* 1                      # load in imm val 1
-    lsl* 6                      # left shift 0b00000001 --> 0b 01000000
+    mof* 0001                      # load in imm val 1
+    lsl* 0110                      # left shift 0b00000001 --> 0b 01000000
     mov $t15                    # store data mem address in reg
     mof	$t2						# load min into acc
     str	$t15					# store min into respective place in memory
     mof $t15                    # load in data mem address
-    add* 1                      # add one 64 + 1 = 65
+    add* 0001                      # add one 64 + 1 = 65
     mov $t15                    # save this new address
     mof	$t1						# load max into acc
     str	$t15					# store min into respective place in memory

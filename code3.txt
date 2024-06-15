@@ -1,158 +1,183 @@
-mof* 0					
-mov	$t7						
-mov $t8					
-mov	$t9						
-mov $t10				
-mof* 8					
-mov $t5					 
-mof* 0b1111				
-Mov $t11				
-Lsl	4						
-Or $t11					
-mov $t11				
-mov	$t6						
-lwr	$multiplier1			
-mov	$t1						 
-lwr	$multiplier2			
-mov	$t2						 
-lwr	$multiplicand1			
-mov	$t3						
-lwr	$multiplicand2			
-mov	$t4						
-mof* 1					
-lsl* 7					
-and	$t4						
-beq	LINE40		
-mof	$t6						
-xor	$t11					
-mof	$t4						
-xor	$t11					
-add* 1					
-mov	$t4						
-mof $t3					
-xor	$t11					
-add* 1					
-mov	$t3						
-bne	LINE40		
-mof	$t4						
-add* 1					
-mov	$t4						
-mof* 1					
-lsl* 7					
-and	$t2						
-beq	LINE58					
-mof	$t6						
-xor	$t11					
-mof	$t2						
-xor	$t11					
-add* 1					
-mov	$t2						
-mof $t1					
-xor	$t11					
-add* 1					
-mov	$t1						
-bne	LINE58					
-mof	$t2						
-add* 1					
-mov	$t2						
-mof $t5						
-sub* 1				
-mov	$t5						
-mof* 8				
-sub	$t5						
-mov	$t15					
-mof* 1					
-lsl	$t5						
-and	$t1						
-beq	LINE96				 
-mof	$t3						
-lsl	$t5						
-add	$t7						
-mov	$t7						
-cmp $t7					
-add	$t8						
-mov	$t8						
-mof	$t3						
-rsl	$t15					
-add	$t8						
-mov	$t8						
-cmp	$t8						
-add	$t9						
-mov	$t9						
-mof	$t4						
-lsl	$t5						
-add	$t8						
-mov	$t8						
-cmp	$t8						
-add	$t9						
-mov	$t9						
-mof	$t4						
-rsl	$t15					
-add	$t9						
-mov	$t9						
-cmp	$t9						
-add	$t10					
-mov	$t10					 
-mof* 1					
-lsl	$t5						
-and	$t2						
-beq	LINE58					
-mof	$t3						
-lsl	$t5						
-add	$t8						
-mov	$t8						
-cmp	$t8						
-add	$t9						
-mov	$t9						
-mof	$t3						
-rsl	$t15					
-add	$t9						
-mov	$t9						
-cmp	$t9						
-add	$t10					
-mov	$t10					
-mof	$t4						
-lsl	$t5						
-add	$t9						
-mov	$t9						
-cmp	$t9						
-add	$t10					
-mov	$t10					
-mof	$t4						
-rsl	$t15					
-add	$t10					
-mov	$t10					
-beq LINE127				
-j LINE58				 
-mof $t6						
-bne LINE151					
-mof	$t10					
-xor	$t11					
-mov	$t10					
-mof	$t9						
-xor	$t11					
-mov	$t9						
-mof	$t8						
-xor	$t11					
-mov	$t8						
-mof	$t7						
-xor	$t11					
-add* 1					 
-mov	$t7						
-cmp* 1					
-add	$t8						
-mov	$t8						
-cmp* 1					
-add	$t9						
-mov	$t9						
-cmp* 1					
-add	$t10					 
-mov	$t10					
-mov $t7						
-str	$lowerreg1				
-mov	$t8						
-str	$lowerreg2				
-mov	$t9						
-str	$upperreg1				
-mov	$t10					
-str	$upperreg2				
+ mof*	0000						# load acc with 0
+    mov	$t7						# set lowerreg1 to 0
+    mov 	$t8						# set lowerreg2 to 0
+    mov	$t9						# set upperreg1 to 0
+    mov 	$t10						# set upperreg2 to 0
+    mof*   0111						# load acc with 8
+    mov    $t5						# set iterator to 8
+    mof*	1111					# load imm value 15 into acc
+    Mov 	$t11						# set our mask (0b11111111) lower 4 bits
+    Lsl	0100						# left shift acc value by imm value 4 → 0b11110000
+    Or	$t11						# or with our mask to get full mask
+    mov 	$t11						# set our mask to 0b11111111
+    mov	$t6						# set signed toggle to bitmask (means positive)
+    lwr	$multiplier1				# load multiplier1 from memory
+    mov	$t1						# set multiplier1 reg to val from mem
+    lwr	$multiplier2				# load multiplier2 from memory
+    mov	$t2						# set multiplier2 reg to val from mem
+    lwr	$multiplicand1				# load multiplicand1 from memory
+    mov	$t3						# set multiplicand1 reg to val from mem
+    lwr	$multiplicand2				# load multiplicand2 from memory
+    mov	$t4						# set multiplicand2 reg to val from mem
+
+# check negatives and convert to positive (two’s complement)
+
+    mof*	0001						# load imm value 1 into acc
+    lsl*	0111						# left shift 7; 0b1 → 0b10000000
+    and	$t4						# and with multiplicand2 to get MSB
+    beq	$checkMultiplier				# if MSB not set, check next, otherwise fall through
+    mof	$t6						# load in signed toggle
+    xor	$t11						# toggle signed reg (means negative)
+    
+    mof	$t4						# load in multiplicand2
+    xor	$t11						# xor with 1 bitmask
+    add*	0001						# add 1 to get two’s complement (ignore overflow)
+    mov	$t4						# update multiplicand2 reg
+    mof 	$t3						# load in multiplicand1
+    xor	$t11						# xor with 1 bitmask
+    add*	0001						# add 1 to get two’s complement (overflow → add 1)
+    mov	$t3						# update multiplicand1 reg
+    bne	$checkMultiplier				# branch if no overflow (not equal to 0)
+    mof	$t4						# load in multiplicand2
+    add*	0001						# add 1 (overflow)
+    mov	$t4						# update multiplicand2
+
+checkMultiplier:
+    mof*	0001						# load imm value 1 into acc
+    lsl*	0111						# left shift 7; 0b1 → 0b10000000
+    and	$t2						# and with multiplier2 to get MSB
+    beq	$loop						# if MSB not set, check next, otherwise fall through
+    mof	$t6						# load in signed toggle
+    xor	$t11						# toggle signed reg (means negative/positive)
+
+    mof	$t2						# load in multiplier2
+    xor	$t11						# xor with 1 bitmask
+    add*	0001						# add 1 to get two’s complement (ignore overflow)
+    mov	$t2						# update multiplier2 reg
+    mof 	$t1						# load in multiplier1
+    xor	$t11						# xor with 1 bitmask
+    add*	0001						# add 1 to get two’s complement (overflow → add 1)
+    mov	$t1						# update multiplier1 reg
+    bne	$loop						# branch if no overflow (not equal to 0)
+    mof	$t2						# load in multiplier2
+    add*	0001						# add 1 (overflow)
+    mov	$t2						# update multiplier2
+
+Loop:
+    mof	$t5						# load in i
+    sub*	0001						# subtract by 1; i - 1; iterate 7 through 0
+    mov	$t5						# update i
+    mof*	1000						# load imm value 8 into acc
+    sub	$t5						# subtract i from 8
+    mov	$t15						# store this value for later use
+    mof*	0001						# load 1 into acc
+    lsl	$t5						# shift left by i to get bit
+    and	$t1						# see if specified bit is set in multiplier1
+    beq	$Multiply2					# if bit not set, check next multiplier; fall through
+
+    mof	$t3						# load in multiplicand1
+    lsl	$t5						# shift over left by i
+    add	$t7						# add to lowerreg1
+    mov	$t7						# update lowerreg1
+    cmp 	$t7						# check if sum is less than lowerreg1
+    add	$t8						# add 1 to lowerreg2 if overflowed
+    mov	$t8						# update lowerreg2
+
+    mof	$t3						# load multiplicand1 into acc
+    rsl	$t15						# right shift by 8-i
+    add	$t8						# add to lowerreg2
+    mov	$t8						# update lowerreg2
+    cmp	$t8						# check if sum is less than lowerreg2
+    add	$t9						# add 1 to upperreg1 if overflowed
+    mov	$t9						# update upperreg1
+
+    mof	$t4						# load in multiplicand2
+    lsl	$t5						# shift over by i
+    add	$t8						# add to lowerreg2
+    mov	$t8						# update lowerreg2
+    cmp	$t8						# check if sum is less than lowerreg2
+    add	$t9						# add 1 to upperreg1 if overflowed
+    mov	$t9						# update upperreg1
+
+    mof	$t4						# load in multiplicand2
+    rsl	$t15						# right shift by 8-i
+    add	$t9						# add to upperreg1
+    mov	$t9						# update upperreg1
+    cmp	$t9						# check if sum is less than upperreg1
+    add	$t10						# add 1 to upperreg2 if overflowed
+    mov	$t10						# update upperreg2  
+
+Multiply2:
+    mof*	0001						# load 1 into acc
+    lsl	$t5						# left shift 1 by i to get bit
+    and	$t2						# see if specified bit is set in multiplier2
+    beq	$Loop						# if bit not set continue; fall through
+
+    mof	$t3						# load in multiplicand1
+    lsl	$t5						# shift left by i
+    add	$t8						# add to lowerreg2
+    mov	$t8						# update lowerreg2
+    cmp	$t8						# check if sum is less than lowerreg2
+    add	$t9						# add 1 to upperreg1 if overflowed
+    mov	$t9						# update upperreg1
+
+    mof	$t3						# load in multiplicand1
+    rsl	$t15						# right shift by 8-i
+    add	$t9						# add to upperreg1
+    mov	$t9						# update upperreg1
+    cmp	$t9						# check if sum is less than upperreg1
+    add	$t10						# add 1 to upperreg2 if overflowed
+    mov	$t10						# update upperreg2
+
+    mof	$t4						# load in multiplicand2
+    lsl	$t5						# shift over by i
+    add	$t9						# add to upperreg1
+    mov	$t9						# update upperreg1
+    cmp	$t9						# check if sum is less than upperreg1
+    add	$t10						# add 1 to upperreg2 if overflowed
+    mov	$t10						# update upperreg2
+
+    mof	$t4						# load in multiplicand2
+    rsl	$t15						# right shift by 8-i
+    add	$t10						# add to upperreg2
+    mov	$t10						# update upperreg2
+    beq    $Exit						# if i = 0, exit
+    j		$Loop						# loop back
+    
+Exit:
+    mof	$t6						# load signed toggle into acc
+    bne	$Done						# if result should not be negative, finish
+    mof	$t10						# load upperreg2
+    xor	$t11						# xor to get two’s comp
+    mov	$t10						# update upperreg2
+    mof	$t9						# load upperreg1
+    xor	$t11						# xor to get two’s comp
+    mov	$t9						# update upperreg1
+    mof	$t8						# load lowerreg2
+    xor	$t11						# xor to get two’s comp
+    mov	$t8						# update lowerreg2
+    mof	$t7						# load lowerreg1
+    xor	$t11						# xor to get two’s comp
+    add*	0001						# add 1 to finish two’s comp
+    mov	$t7						# update lowerreg1
+    cmp*	0001						# overflow if result < 1
+    add	$t8						# add overflow to lowerreg2
+    mov	$t8						# update lowerreg12
+    cmp*	0001						# overflow if result < 1
+    add	$t9						# add overflow to upperreg1
+    mov	$t9						# update upperreg1
+    cmp*	0001						# overflow if result < 1
+    add	$t10						# add overflow to upperreg2
+    mov	$t10						# update upperreg2
+
+
+Done:
+    mov	$t7						# load lowerreg1
+    str	$lowerreg1					# store into memory 
+    mov	$t8						# load lowerreg2
+    str	$lowerreg2					# store into memory
+    mov	$t9						# load upperreg1
+    str	$upperreg1					# store into memory
+    mov	$t10						# load upperreg2
+    str	$upperreg2					# store into memory
+    

@@ -12,6 +12,8 @@ module PC_LUT #(parameter D=12)(
 	5: target = 85;
 	6: target = 88;
 	7: target = 91;
+	8: 64;    // this is the min index
+	9: 65;    // this is the max index
 	8: target = 31;		// Program 2
 	9: target = 31;
 	10: target = 31;
