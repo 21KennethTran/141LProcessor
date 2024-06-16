@@ -13,8 +13,12 @@ module PC #(parameter D=12)(
   always_ff @(posedge clk)
 		if(Start)
 			prog_ctr <= '0;
-		else if(Branch)
-			prog_ctr <= target;
+		else if(Branch) begin
+			if (target == 0)
+				prog_ctr <= prog_ctr + 'b1;
+			else
+				prog_ctr <= target;
+		end
 		else if(Done)
 			prog_ctr <= prog_ctr;
 		else

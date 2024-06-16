@@ -1,46 +1,88 @@
 module PC_LUT #(parameter D=12)(
-  input       [ 3:0] addr,	   // target 4 values
+  input       		[7:0]addr,	   // target 4 values
+//  input				Lookup,
+//  output	logic		Branch,
   output logic[D-1:0] target);
 
   // absolute jumps
-  always_comb case(addr)
-   0: target = 1;   		// default
-	1: target = 18;   	// Program 1
-	2: target = 31;
-	3: target = 54;
-	4: target = 76;
-	5: target = 85;
-	6: target = 88;
-	7: target = 91;
-	8: 64;    // this is the min index
-	9: 65;    // this is the max index
-	8: target = 31;		// Program 2
-	9: target = 31;
-	10: target = 31;
-	11: target = 31;
-	12: target = 31;
-	13: target = 31;
-	14: target = 31;
-	15: target = 31;
-	default: target = 'b0;  // hold PC  
-  endcase
+  always_comb begin
+//	  if (Lookup) begin
+		  case(addr)
+			0: begin
+//				Branch = 0;
+				target = 0;	// default
+				end
+			1: begin
+//				Branch = 1;
+				target = 17;   	// Program 1
+				end
+			2: begin
+//				Branch = 1;
+				target = 30;
+				end
+			3: begin
+//				Branch = 1;
+				target = 53;
+				end
+			4: begin
+//				Branch = 1;
+				target = 75;
+				end
+			5: begin
+//				Branch = 1;
+				target = 84;
+				end
+			6: begin
+//				Branch = 1;
+				target = 87;
+				end
+			7: begin
+//				Branch = 1;
+				target = 90;
+				end
+			8: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			9: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			10: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			11: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			12: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			13: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			14: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			15: begin
+//				Branch = 1;
+				target = 1;		// default
+				end
+			default: begin
+//				Branch = 0;
+				target = 'b0;  // hold PC  
+				end
+		  endcase
+//		 end
+//		 else begin
+//			Branch = 0;
+//			target = 0;
+//		end
+	 end
 
 endmodule
 
-/*
-
-	   pc = 4    0000_0000_0100	  4
-	             1111_1111_1111	 -1
-
-                 0000_0000_0011   3
-
-				 (a+b)%(2**12)
-
-
-   	  1111_1111_1011      -5
-      0000_0001_0100     +20
-	  1111_1111_1111      -1  
-	  0000_0000_0000     + 0
-
-
-  */

@@ -56,6 +56,7 @@ Inner_loop:
 Bit_manipulation:
     mof	$t11						# move k into acc
     sub*	0001						# subtract k by 1; k-1
+    mov $t11                        # saving k
     mof	$t7						# move xor’d 1 into acc
     lsl	$t11						# left shift by k
     mov	$t13						# store value in $t13
@@ -63,14 +64,13 @@ Bit_manipulation:
     lsl	$t11						# left shift by k
     mov	$t14						# store value in $t14
     mof*	0111						# load imm value 7
-    sub	$t11						# subtract 7 by k
     mov	$t15						# store new value in reg
     mof	$t13						# load value at $t13
-    rsl	$t15						# right shift by 7-k
+    rsl	$t15						# right shift by 7
     add	$t12						# add to total distance; 1(or 0) + distance
     mov	$t12						# store in total distance
     mof	$t14						# load value at $t14
-    rsl	$t15						# right shift by 7-k
+    rsl	$t15						# right shift by 7
     add	$t12						# add to total distance; 1(or 0) + distance
     mov	$t12						# store in total distance
     mof	$t11						# move k into acc

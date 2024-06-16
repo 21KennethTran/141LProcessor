@@ -12,7 +12,6 @@ module Control (
 	output logic		AccWrite,		// write to acc
 	output logic		MemRead,			// read from mem
 	output logic		MemWrite,		// write to mem
-	output logic		Start,			// Start program
 	output logic		Done,				// stop
 	output logic		Branch,			// Branching
 	output logic		Lookup,			// lookup table needed; Branch and lookup are the same... need another bit for this?
@@ -21,21 +20,11 @@ module Control (
 	);
 
 always_comb begin
-// defaults
-//  RegDst 	=   'b0;   // 1: not in place  just leave 0
-//  Branch 	=   'b0;   // 1: Branch (jump)
-//  MemWrite  =	'b0;   // 1: store to memory
-//  ALUSrc 	=	'b0;   // 1: immediate  0: second reg file output
-//  RegWrite  =	'b1;   // 0: for store or no op  1: most other operations 
-//  MemtoReg  =	'b0;   // 1: load -- route memory instead of ALU to reg_file data in
-//  ALUOp	    =   'b111; // y = a+0;
   
-  // defaults: Do I need Start bit to set these to default values?
   RegWrite	= 0;
   AccWrite	= 0;
   MemRead	= 0;
   MemWrite	= 0;
-  Start		= 0;				// probably do not need
   Done		= 0;
   Branch		= 0;
   Lookup		= 0;
@@ -48,7 +37,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 1;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -63,7 +51,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 1;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -74,7 +61,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -85,7 +71,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -100,7 +85,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -116,7 +100,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -132,7 +115,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -148,7 +130,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -164,7 +145,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -180,7 +160,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -196,7 +175,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -212,7 +190,6 @@ case(opcode)
 				AccWrite	= 1;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 0;
 				Lookup	= 0;
@@ -227,7 +204,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 1;
 				Lookup	= 1;
@@ -239,7 +215,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 1;
 				Lookup	= 1;
@@ -252,7 +227,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 0;
 				Branch	= 1;
 				Lookup	= 1;
@@ -264,7 +238,6 @@ case(opcode)
 				AccWrite	= 0;
 				MemRead	= 0;
 				MemWrite	= 0;
-				Start		= 0;
 				Done		= 1;
 				Branch	= 0;
 				Lookup	= 0;

@@ -8,6 +8,8 @@ module dat_mem (
   output logic[7:0] dat_out);
 
   logic[7:0] core[256];       // 2-dim array  8 wide  256 deep
+  initial
+	$readmemb("test0.txt", core);
 
 // reads are combinational; no enable or clock required
 //  assign dat_out = core[addr];
@@ -21,6 +23,6 @@ module dat_mem (
 // writes are sequential (clocked) -- occur on stores or pushes 
   always_ff @(posedge clk) begin
     if(MemWrite)				  		// MemWrite usually = 0; = 1 		
-      core[addr] <= dat_in; 
+      core[dat_in] <= addr; 		// addr holds accumulator value, dat_in (from ALU) is where in memory we want to write to
   end
 endmodule

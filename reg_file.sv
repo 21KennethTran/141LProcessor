@@ -6,18 +6,19 @@ module reg_file #(parameter pw=4)(
   input						ImmVal,
   input      				AccWrite,         // write enable to accumulator
   input						RegWrite,			// write enable to reg
+  input						Branch,				// see if lookup table used
   input[pw:0] 				addr,		  			// address of register
   output logic[7:0] 		acc_out, 			// read data
 								reg_out);
 
-  logic[7:0] core[2**pw];    // 2-dim array  8 wide  16 deep
+  logic[7:0] core[16];    // 2-dim array  8 wide  16 deep
 
 	// reads are combinational
   assign acc_out = core[0];
   
   // use immediate values or register values
   always_comb begin
-		if(ImmVal) begin
+		if(ImmVal || Branch) begin
 			reg_out = addr;
 		end else begin
 			reg_out = core[addr];

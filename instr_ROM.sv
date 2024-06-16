@@ -7,22 +7,8 @@ module instr_ROM #(parameter D=12)(
 
   logic[8:0] core[2**D];
   initial							    // load the program
-    $readmemb("mach_code.txt",core);
+    $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/machcode1.txt",core);
 
   always_comb  mach_code = core[prog_ctr];
 
 endmodule
-
-
-/*
-sample mach_code.txt:
-
-001111110		 // ADD r0 r1 r0
-001100110
-001111010
-111011110
-101111110
-001101110
-001000010
-111011110
-*/

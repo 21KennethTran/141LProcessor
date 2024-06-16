@@ -1,6 +1,7 @@
 // sample top level design
 module top_level(
-  input        		clk, 
+  input        		clk,
+  input					Start, 
   output logic 		done
   );
   parameter 			D = 12,             			// program counter width
@@ -12,7 +13,7 @@ module top_level(
   wire					AccWrite;
   wire					MemRead;
   wire					MemWrite;
-  wire					Start;
+//  wire					Start;
   wire					Done;
   wire					Branch;
   wire					Lookup;
@@ -46,6 +47,8 @@ module top_level(
 // lookup table to facilitate jumps/Branches
   PC_LUT #(.D(D))
     pl1 (.addr  (rslt),
+//			.Lookup(Lookup),
+//			.Branch(Branch),
          .target(target)
 			);   
 
@@ -63,7 +66,6 @@ module top_level(
 		.AccWrite(AccWrite), 
 		.MemRead(MemRead), 
 		.MemWrite(MemWrite),     
-		.Start(Start),
 		.Done(Done),
 		.Branch(Branch),
 		.Lookup(Lookup),
@@ -75,11 +77,12 @@ module top_level(
   assign opcode  = mach_code[8:5];
 
   reg_file #(.pw(3)) rf1(
-					.dat_in(AccWrite ? mem_out: rslt),	   			// result from ALU OR from datamem
+					.dat_in(rslt),	   										// from ALU
 					.clk(clk),
 					.ImmVal(ImmVal),
 					.AccWrite(AccWrite),
 					.RegWrite(RegWrite),
+					.Branch(Branch),
 					.addr(operand),      									// in place operation
 					.acc_out(acc_out),
 					.reg_out(reg_out)
@@ -90,7 +93,7 @@ module top_level(
 			.opcode(opcode),
          .identifier(identifier),
 			.inAcc(acc_out),
-			.inReg(reg_out),   							// output from reg_file
+			.inReg(MemRead ? mem_out: reg_out),   							// if we are reading from mem, get dat_mem, else get imm value or register value from rf1
 			.rslt(rslt)
 			);  
 
