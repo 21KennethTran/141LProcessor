@@ -22,23 +22,23 @@ module PC_LUT #(parameter D=12)(
 				end
 			3: begin
 //				Branch = 1;
-				target = 53;
+				target = 54;
 				end
 			4: begin
 //				Branch = 1;
-				target = 75;
+				target = 76;
 				end
 			5: begin
 //				Branch = 1;
-				target = 84;
+				target = 85;
 				end
 			6: begin
 //				Branch = 1;
-				target = 87;
+				target = 88;
 				end
 			7: begin
 //				Branch = 1;
-				target = 90;
+				target = 91;
 				end
 			8: begin
 //				Branch = 1;

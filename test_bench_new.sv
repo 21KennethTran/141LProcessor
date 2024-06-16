@@ -22,7 +22,7 @@ always begin
 end
 
 // number of tests
-int itrs = 1;
+int itrs = 10;
 int min_pass = 0;
 int max_pass = 0;
 
@@ -39,15 +39,15 @@ initial begin
 	Max = 'd0;						         // start test bench Max at min value
     case(loop_ct)
         0: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test0.txt",D1.dm1.core);
-	    1: $readmemb("test1.txt",D1.dm1.core);
-        2: $readmemb("test2.txt",D1.dm1.core);
-	    3: $readmemb("test3.txt",D1.dm1.core);
-        4: $readmemb("test4.txt",D1.dm1.core);
-        5: $readmemb("test5.txt",D1.dm1.core);
-        6: $readmemb("test6.txt",D1.dm1.core);
-	    7: $readmemb("test7.txt",D1.dm1.core);
-        8: $readmemb("test8.txt",D1.dm1.core);
-        9: $readmemb("test9.txt",D1.dm1.core);
+	    1: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test1.txt",D1.dm1.core);
+        2: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test2.txt",D1.dm1.core);
+	    3: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test3.txt",D1.dm1.core);
+        4: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test4.txt",D1.dm1.core);
+        5: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test5.txt",D1.dm1.core);
+        6: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test6.txt",D1.dm1.core);
+	    7: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test7.txt",D1.dm1.core);
+        8: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test8.txt",D1.dm1.core);
+        9: $readmemb("C:/Users/Kenneth Tran/Desktop/141LProcessor/test9.txt",D1.dm1.core);
     endcase
     for(int i=0; i<32; i++) begin
       Tmp[i] = {D1.dm1.core[2*i],D1.dm1.core[2*i+1]};
