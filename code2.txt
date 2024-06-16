@@ -1,86 +1,166 @@
-Main:
-Lwr $t0 0b11111111
-Mov $t1 0
-Mov $t2 0
-Mov* $t3
-Mov* $t4
-Mov* $t11
-Mov $t5 0
-Mov $t6 2
+mof*	0000			# load 0 into accumulator
+    mov	$t1			# set max or r0 to 0
+    mov    $t2			$ set max or r12 to 0
+    mof* 	1111			# load immediate value 1111 into acc
+    mov	$t3			# set min or r1 to 1111
+    mov 	$t4			# set min to 1111
+    Mov 	$t11			# set our mask (0b11111111) lower 4 bits
+    Lsl	0100			# left shift acc → 0b11110000
+    Or	$t11			# or with our mask to get full mask
+    mov 	$t11			# set our mask to 0b11111111
+    mov    $t3
+    mov    $t4
+    mof*	0001			# load imm value 1 into acc
+    Xor	$t11		  	# xor with mask → 0b11111110
+    lsl*	0010			# left shift acc value by 2 → 0b11111000
+    rsl*	0010			# right shift acc → 0b00111110 (62)
+    mov	$t12			# set j_max = 62 for inner loop
+    add*	0010	    		# 62 + 2 = 64 for our start i value
+    mov	$t6			# set i = 64 (will become 62 at loop start)
 
-Outer_loop:
-Beq $t5 62 Exit
-Add $t5 2
-Mov* $t5
-Mov* $t6
-Add $t6 2  
+Outer_loop: 
+    Mof    $t5			# load i into acc
+    beq	1110			# branch to exit if i = 0
+    sub*	0010			# subtract i by 2
+    Mov    $t5			# move new i value back into $t2
+    mof  $t5
+    lwr	$t5			# load data_mem[$t2]; value in memory
+    mov	$t8		 	# save to temp2 (upper bits)
+    mof	$t5			# move i into acc
+    add*	0001			# add imm value 1 to acc
+    mov	$t15			# store $t2+1 into register
+    mof $t15
+    lwr	$t15			# load data_mem[$t2+1]; value in memory
+    mov	$t7			# save to temp1 (lower bits)
+    mof	$t12			# load j_max into acc
+    mov	$t4			# set j to 62 (countdown to i)
 
+Inner_loop: 
+    mof	$t6			# move j into acc
+    sub	$t5			# subtract i from j
+    beq	1000	# go out to outer loop if equal to 0
+    mof $t6
+    lwr	$t6			# load data_mem[$t3]; value in memory
+    mov	$t10			# save to temp2j (upper bits)
+    mof	$t6			# move j into acc
+    add*	0001			# add imm value 1 to acc
+    mov	$t15			# store $t3+1 into register
+    mof $t15
+    lwr	$t15			# load data_mem[$t3+1]; value in memory
+    mov	$t9			# save to temp1j (lower bits)
+    mof	$t6			# move j into acc
+    sub*	0010			# subtract j by 2
+    mov 	$t6			# move new j value back into $t4
+    mof	$t8			# move upper temp1 into acc
+    Xor    $t11
+    Mov    $t8
+    Mof    $t7
+    Xor    $t11
+    Mov    $t7
+    Add*   0001    //Add 1 to finish twos complement
+    Mov    $t15   // Save this value to t15
+    Cmp    $t7    // compare acc with og t7
+    Add    $t8    //add this to the upper
+    Mov    $t8     // move this to the upper
+    Mof    $t15    //load in new t7
+    Mov   $t7     //move that into t7
+    Add   $t9     //add the lower bits
+    Mov   $t15    // save that to t15
+    Cmp   $t9     // compare with og lower bits
+    Add   $t8     // add uppper bit
+    Add   $t10    // add other upper bit
+    Mov   $t10   // save that into upper bit
+    Mof   $t15    // load in new lower bit
+    Mov   $t9     // move that into t9
+    Mof   $t10    // load into t10
+    Rsl   0111    // right shift by 7
+    Bne   1010    // if negative, jump to Negative
+    Mof    $t9			# otherwise move other lower into t14
+    Mov    $t14			
+    Mof    $t10			# move other upper into t15
+    Mov    $t15	
+    Mof    $t1		
+    Cmp    $t10			#compare upper to max
+    Bne  1100	#if its 1, update max
+    Mof  $t10
+    Cmp  $t1
+    Bne 1011      #t10 was less than max, compare min
+    Mof  $t2			# it was equal, compare lower
+    Cmp  $t9
+    Bne  1100		#lower of nonzero bits are more than, update max
+    J    1011
+ 
+Negative:
+    Mof   $t10    // Load in upper bits
+    Xor   $t11   //xor
+    Mov   $t10    // move into t10
+    Mof   $t9     // move in t9
+    Xor   $t11    //xor
+    Mov   $t9    // mov bak
+    Add*  0001   // finish twos complement
+    Mov   $t15   // save to t15
+    Cmp   $t9    // compare with og
+    Add   $t10   // add overflow
+    Mov   $t10   // save to t10
+    Mof   $t15
+    Mov   $t9			# otherwise move other lower into t14
+    Mov    $t14	
+    Mof    $t10
+    Mov $t15			
+    Mof    $t1		
+    Cmp    $t10			#compare upper to max
+    Bne  1100	#if its 1, max less than curr
+    Mof  $t10
+    Cmp  $t1
+    Bne  1011     #t10 was less than max, compare min
+    Mof  $t2			# it was equal, compare lower
+    Cmp  $t9
+    Bne  1100		#lower of nonzero bits are more than, update max
+    
+Compare_Min: 
+    Mof $t10
+    Cmp $t3
+    Bne 1101
+    Mof $t3
+    Cmp  $t10
+    Bne  1001
+    Mof $t9
+    Cmp $t4
+    Bne 1101
+    J 1001
+    
+New_max: 
+    Mof $t10
+    Mov $t1
+    Mof $t9
+    Mov $t2
+    J 1001
 
-Inner_loop:
-Beq $t6 64 Outer_loop 
-Lwr* data_mem
-Add $t5 
-Lwr $t7
-Add* 1
-Lwr $t8
-Lwr* data_mem
-Add $t6
-Lwr $t9
-Add 1
-Lwr $t10
-Lwr* $t11
-Xor $t7
-add $t7 1
-Add $t8
-Xor $t11
-Mov $t7
-Add $t9
-Mov $t7
-Mov $t8
-Add $t10
-Mov $t8
-Rsl 8
-Beq 0 CompareUpperMin
-Mov* $t7
-Xor $t11
-Add 1
-Mov $t7
-Mov* $t8
-Xor $t11
-Add* $t12
-Mov $t8
+New_min:
+Mof $t10
+    Mov $t3
+    Mof $t9
+    Mov $t4
+    J 1001
 
-
-CompareUpperMin:
-Mov* $t8
-Bgt* $t3 CompareMax
-Beq* $t3 CompareLowerMin
-Mov $t3
-Mov* $t7
-Mov $t4
-
-
-CompareLowerMin:
-Mov* $t7
-Bgt* $t3 CompareUpperMax
-Mov $t4
-
-CompareUpperMax:
-Mov* t8
-Ble* t1 Increment
-Beq* t1 CompareLowerMax
-Mov $t1
-Mov* $t7
-Mov $t2 
-
-
-CompareLowerMax:
-Mov* $t7
-Ble* $t1 Increment
-Mov $t2
-
-
-Increment:
-Add $t6 2
-j innerloop
+exit: 
+    mof*	0001                 # load in imm val 1
+    lsl*	0110                 # left shift 0b00000001 --> 0b 01000000
+    add*   0010
+    mov	$t14              # store 66 in reg
+    add*   0001
+    Mov    $t15           #store 67
+    mof	$t1			  # load upper min into acc
+    str	$t14			# store min into respective place in memory
+    Mof    $t2      #load lower min into acc
+    Str    $t15    #store min 
+    Mof    $t15
+    Add* 0001
+    Mov    $t14
+    Add* 0001
+    Mov  $t15
+   mof	$t3			  # load min into acc
+    str	$t14			# store min into respective place in memory
+    Mof    $t4
+    Str    $t15
 

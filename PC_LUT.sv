@@ -22,51 +22,51 @@ module PC_LUT #(parameter D=12)(
 				end
 			3: begin
 //				Branch = 1;
-				target = 53;
+				target = 54;
 				end
 			4: begin
 //				Branch = 1;
-				target = 75;
+				target = 76;
 				end
 			5: begin
 //				Branch = 1;
-				target = 84;
+				target = 85;
 				end
 			6: begin
 //				Branch = 1;
-				target = 87;
+				target = 88;
 				end
 			7: begin
 //				Branch = 1;
-				target = 90;
+				target = 91;
 				end
 			8: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 19;		// default
 				end
 			9: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 34;		// default
 				end
 			10: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 87;		// default
 				end
 			11: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 112;		// default
 				end
 			12: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 122;		// default
 				end
 			13: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 127;		// default
 				end
 			14: begin
 //				Branch = 1;
-				target = 1;		// default
+				target = 132;		// default
 				end
 			15: begin
 //				Branch = 1;
