@@ -33,6 +33,7 @@ Inner_loop:
     mof	$t4						# move j into acc
     sub	$t3						# subtract i from j
     beq	0001			#(1:18) go out to outer loop if equal to 0
+    mof $t4                     # move j into acc
     lwr	$t4						# load data_mem[$t3]; value in memory
     mov	$t8						# save to temp2j (upper bits)
     mof	$t4						# move j into acc
